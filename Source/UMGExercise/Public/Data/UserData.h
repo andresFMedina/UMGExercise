@@ -16,9 +16,6 @@ struct FUserDataRow : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Id;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Nickname;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
