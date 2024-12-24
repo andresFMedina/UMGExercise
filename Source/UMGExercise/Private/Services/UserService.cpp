@@ -6,6 +6,8 @@
 #include "Data/UserData.h"
 #include "TimerManager.h"
 
+UUserService* UUserService::Instance = nullptr;
+
 UUserService::UUserService()
 {
 	UsersDataTable = GetUsersDataTable();
@@ -45,9 +47,18 @@ void UUserService::GenerateConnectionStatusChanges()
 		RandomUserToChange->bIsConnected = !RandomUserToChange->bIsConnected;
 		SetUserData(RandomUserToChange);
 
-		OnUserChangeConnectionStatus.Broadcast(RandomUserToChange);
+		OnUserChangeConnectionStatus.Broadcast(*RandomUserToChange);
 		StartConnectionStatusChangesTimer();
 	}
+}
+
+UUserService* UUserService::Get()
+{
+	if (!Instance)
+	{		
+		Instance = NewObject<UUserService>();
+	}
+	return Instance;
 }
 
 TArray<FUserDataRow*> UUserService::GetFriends(const bool bIsConnected) const

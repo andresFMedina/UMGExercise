@@ -8,7 +8,7 @@
 struct FUserDataRow;
 class UDataTable;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnUserChangeConnectionStatus, FUserDataRow* /*UserChanged*/);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnUserChangeConnectionStatusDelegate, FUserDataRow /*UserChanged*/);
 /**
  * 
  */
@@ -19,20 +19,25 @@ class UMGEXERCISE_API UUserService : public UObject
 	GENERATED_BODY()
 	UUserService();
 
+	static UUserService* Instance;
+
 	UDataTable* UsersDataTable;
 
-	FTimerHandle ChangeConnectionTimer;
+	FTimerHandle ChangeConnectionTimer;	
 
-	FOnUserChangeConnectionStatus OnUserChangeConnectionStatus;
-
-	UDataTable* GetUsersDataTable() const;
-
-	void StartConnectionStatusChangesTimer();
+	UDataTable* GetUsersDataTable() const;	
 
 	void GenerateConnectionStatusChanges();
 	
+
 public:
+	static UUserService* Get();
+
+	void StartConnectionStatusChangesTimer();
+
 	TArray<FUserDataRow*> GetFriends(const bool bIsConnected) const;
 	void SetUserData(FUserDataRow* UserChanged);
 	FUserDataRow* GetUserByNickname(const FString& UserName) const;
+
+	FOnUserChangeConnectionStatusDelegate OnUserChangeConnectionStatus;
 };
