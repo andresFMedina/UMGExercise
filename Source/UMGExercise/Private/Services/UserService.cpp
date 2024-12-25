@@ -21,13 +21,13 @@ UDataTable* UUserService::GetUsersDataTable() const
 	{
 		UsersDataTableRef.LoadSynchronous();
 	}
-	return UsersDataTableRef.Get();	
+	return UsersDataTableRef.Get();
 }
 
 void UUserService::StartConnectionStatusChangesTimer()
 {
 	float EventTime = FMath::RandRange(30, 90);
-	GetWorld()->GetTimerManager().SetTimer(ChangeConnectionTimer, this, &UUserService::GenerateConnectionStatusChanges,EventTime, false);
+	GetWorld()->GetTimerManager().SetTimer(ChangeConnectionTimer, this, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
 }
 
 void UUserService::GenerateConnectionStatusChanges()
@@ -55,17 +55,17 @@ void UUserService::GenerateConnectionStatusChanges()
 UUserService* UUserService::Get()
 {
 	if (!Instance)
-	{		
+	{
 		Instance = NewObject<UUserService>();
 	}
 	return Instance;
 }
 
 TArray<FUserDataRow*> UUserService::GetFriends(const bool bIsConnected) const
-{	
+{
 	TArray<FUserDataRow*> UsersFound;
 	UsersDataTable->GetAllRows(TEXT("All Users"), UsersFound);
-	
+
 	if (!UsersFound.IsEmpty()) {
 		UsersFound = UsersFound.FilterByPredicate([bIsConnected](FUserDataRow* User)
 			{
@@ -79,7 +79,7 @@ TArray<FUserDataRow*> UUserService::GetFriends(const bool bIsConnected) const
 void UUserService::SetUserData(FUserDataRow* UserChanged)
 {
 	FUserDataRow* User = GetUserByNickname(UserChanged->Nickname);
-	if (User) 
+	if (User)
 	{
 		User = UserChanged;
 

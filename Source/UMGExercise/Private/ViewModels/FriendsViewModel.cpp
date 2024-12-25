@@ -20,7 +20,7 @@ UFriendModel* UFriendsViewModel::MapUserDataToFriendModel(const FUserDataRow* Us
 UFriendsViewModel::UFriendsViewModel()
 {
 	UserService = UUserService::Get();
-	UserService->StartConnectionStatusChangesTimer();
+	//UserService->StartConnectionStatusChangesTimer();
 	UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
 }
 
