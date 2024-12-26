@@ -54,5 +54,5 @@ void UFriendsViewModel::OnFriendConnectionStatusChanged(FUserDataRow User)
 	UFriendModel* FriendChanged = NewObject<UFriendModel>();
 	FriendChanged->MapUserToFriend(&User);
 	UObject* FriendToSend = Cast<UObject>(FriendChanged);
-	OnFriendStatusChangedDelegate.Broadcast(FriendToSend);
+	OnFriendStatusChangedDelegate.Broadcast(FriendToSend, User.bIsConnected);
 }

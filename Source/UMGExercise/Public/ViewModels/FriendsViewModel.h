@@ -6,7 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "FriendsViewModel.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFriendStatusChanged, UObject*, FriendChanged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFriendStatusChanged, UObject*, FriendChanged, bool, bIsConnected);
 
 class UUserService;
 class UFriendModel;
