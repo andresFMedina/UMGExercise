@@ -4,25 +4,27 @@
 #include "Widgets/FriendHUD.h"
 #include "Widgets/FriendListWidget.h"
 #include "ViewModels/FriendsViewModel.h"
+#include "Engine/DataTable.h"
 
 void UFriendHUD::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	FriendsViewModel = NewObject<UFriendsViewModel>();
-	InitializeLists();
-	FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
+	InitializeLists();	
 }
 
 void UFriendHUD::InitializeLists()
 {
 	check(FriendsViewModel && ConnectedFriendsWidget && DisconnectedFriendsWidget);
 
+	FriendsViewModel->SetDataSource(DataSource);
+
 	ConnectedFriendsWidget->SetListName(FString("Online"));
 	ConnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(true));
 	DisconnectedFriendsWidget->SetListName(FString("Offline"));
 	DisconnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(false));
-	
+	//FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
 }
 
 void UFriendHUD::OnChangeUserConnectionStatus(UObject* Friend, bool bIsConnected)

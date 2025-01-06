@@ -23,12 +23,9 @@ class UMGEXERCISE_API UUserService : public UObject
 
 	UDataTable* UsersDataTable;
 
-	FTimerHandle ChangeConnectionTimer;	
-
-	UDataTable* GetUsersDataTable() const;	
+	FTimerHandle ChangeConnectionTimer;
 
 	void GenerateConnectionStatusChanges();
-	
 
 public:
 	static UUserService* Get();
@@ -38,6 +35,8 @@ public:
 	TArray<FUserDataRow*> GetFriends(const bool bIsConnected) const;
 	void SetUserData(FUserDataRow* UserChanged);
 	FUserDataRow* GetUserByNickname(const FString& UserName) const;
+
+	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
 
 	FOnUserChangeConnectionStatusDelegate OnUserChangeConnectionStatus;
 };

@@ -10,6 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFriendStatusChanged, UObject*, F
 
 class UUserService;
 class UFriendModel;
+class UDataTable;
 struct FUserDataRow;
 /**
  * 
@@ -33,7 +34,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	TArray<UObject*> GetFriendsByConnectionStatus(const bool bIsConnected) const;
+	
+	void OnFriendConnectionStatusChanged(FUserDataRow User);
 
 	UFUNCTION(BlueprintCallable)
-	void OnFriendConnectionStatusChanged(FUserDataRow User);
+	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
 };

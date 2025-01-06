@@ -10,24 +10,20 @@ UUserService* UUserService::Instance = nullptr;
 
 UUserService::UUserService()
 {
-	UsersDataTable = GetUsersDataTable();
-}
-
-UDataTable* UUserService::GetUsersDataTable() const
-{
-	//Get the users table, the Reference will be setted up in the ViewModel
-	TSoftObjectPtr<UDataTable> UsersDataTableRef = TSoftObjectPtr<UDataTable>(FSoftObjectPath(TEXT("/Script/Engine.DataTable'/Game/DataTables/UsersDataTable.UsersDataTable'")));
-	if (!UsersDataTableRef.IsValid())
-	{
-		UsersDataTableRef.LoadSynchronous();
-	}
-	return UsersDataTableRef.Get();
+	
 }
 
 void UUserService::StartConnectionStatusChangesTimer()
 {
 	float EventTime = FMath::RandRange(30, 90);
-	GetWorld()->GetTimerManager().SetTimer(ChangeConnectionTimer, this, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
+	/*if (GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(ChangeConnectionTimer, this, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
+	}
+	else 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World is empty"));
+	}*/
 }
 
 void UUserService::GenerateConnectionStatusChanges()
@@ -89,5 +85,15 @@ void UUserService::SetUserData(FUserDataRow* UserChanged)
 
 FUserDataRow* UUserService::GetUserByNickname(const FString& UserName) const
 {
-	return GetUsersDataTable()->FindRow<FUserDataRow>(FName(UserName), TEXT("Get User"));
+	return UsersDataTable->FindRow<FUserDataRow>(FName(UserName), TEXT("Get User"));
+}
+
+void UUserService::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
+{
+	if (!DataSource.IsValid())
+	{
+		DataSource.LoadSynchronous();
+	}	
+	UsersDataTable = DataSource.Get();
+	check(UsersDataTable);
 }

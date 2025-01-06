@@ -8,6 +8,7 @@
 
 class UFriendListWidget;
 class UFriendsViewModel;
+class UDataTable;
 /**
  * 
  */
@@ -21,6 +22,8 @@ class UMGEXERCISE_API UFriendHUD : public UUserWidget
 	UFriendListWidget* DisconnectedFriendsWidget;
 	UPROPERTY()
 	UFriendsViewModel* FriendsViewModel;
+	UPROPERTY(EditDefaultsOnly)
+	TSoftObjectPtr<UDataTable> DataSource;
 
 protected:
 	virtual void NativeConstruct() override;

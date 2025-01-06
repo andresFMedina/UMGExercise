@@ -5,6 +5,7 @@
 #include"Data/UserData.h"
 #include "Models/FriendModel.h"
 #include "Services/UserService.h"
+#include "Engine/DataTable.h"
 
 UFriendModel* UFriendsViewModel::MapUserDataToFriendModel(const FUserDataRow* User) const
 {
@@ -19,9 +20,7 @@ UFriendModel* UFriendsViewModel::MapUserDataToFriendModel(const FUserDataRow* Us
 
 UFriendsViewModel::UFriendsViewModel()
 {
-	UserService = UUserService::Get();
-	//UserService->StartConnectionStatusChangesTimer();
-	UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
+	UserService = UUserService::Get();	
 }
 
 UFriendModel* UFriendsViewModel::GetFriendByNickname(const FString& Nickname) const
@@ -49,10 +48,18 @@ TArray<UObject*> UFriendsViewModel::GetFriendsByConnectionStatus(const bool bIsC
 	return FriendsFound;
 }
 
+UFUNCTION()
 void UFriendsViewModel::OnFriendConnectionStatusChanged(FUserDataRow User)
 {
 	UFriendModel* FriendChanged = NewObject<UFriendModel>();
 	FriendChanged->MapUserToFriend(&User);
 	UObject* FriendToSend = Cast<UObject>(FriendChanged);
 	OnFriendStatusChangedDelegate.Broadcast(FriendToSend, User.bIsConnected);
+}
+
+void UFriendsViewModel::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
+{
+	UserService->SetDataSource(DataSource);
+	UserService->StartConnectionStatusChangesTimer();
+	UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
 }
