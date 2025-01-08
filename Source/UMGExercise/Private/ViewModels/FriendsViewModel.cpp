@@ -61,5 +61,5 @@ void UFriendsViewModel::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
 {
 	UserService->SetDataSource(DataSource);
 	UserService->StartConnectionStatusChangesTimer();
-	UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
+	//UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
 }
