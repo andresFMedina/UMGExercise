@@ -19,12 +19,14 @@ void UFriendHUD::InitializeLists()
 	check(FriendsViewModel && ConnectedFriendsWidget && DisconnectedFriendsWidget);
 
 	FriendsViewModel->SetDataSource(DataSource);
+	FriendsViewModel->SetWorldContext(GetWorld());
 
 	ConnectedFriendsWidget->SetListName(FString("Online"));
 	ConnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(true));
 	DisconnectedFriendsWidget->SetListName(FString("Offline"));
 	DisconnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(false));
-	//FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
+	
+	FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
 }
 
 void UFriendHUD::OnChangeUserConnectionStatus(UObject* Friend, bool bIsConnected)

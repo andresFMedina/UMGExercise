@@ -16,14 +16,14 @@ UUserService::UUserService()
 void UUserService::StartConnectionStatusChangesTimer()
 {
 	float EventTime = FMath::RandRange(30, 90);
-	/*if (GetWorld())
+	if (WorldContext)
 	{
-		GetWorld()->GetTimerManager().SetTimer(ChangeConnectionTimer, this, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
+		WorldContext->GetTimerManager().SetTimer(ChangeConnectionTimer, Instance, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
 	}
 	else 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("World is empty"));
-	}*/
+	}
 }
 
 void UUserService::GenerateConnectionStatusChanges()

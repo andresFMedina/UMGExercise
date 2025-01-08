@@ -29,7 +29,8 @@ protected:
 	virtual void NativeConstruct() override;
 private:
 	void InitializeLists();
-	
+
+	UFUNCTION(BlueprintCallable)
 	void OnChangeUserConnectionStatus(UObject* Friend, bool bIsConnected);
 
 	void SetConnectedFriend(UObject* Friend);

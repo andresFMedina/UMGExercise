@@ -63,3 +63,8 @@ void UFriendsViewModel::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
 	UserService->StartConnectionStatusChangesTimer();
 	UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
 }
+
+void UFriendsViewModel::SetWorldContext(UWorld* WorldContext)
+{
+	UserService->SetWorldContext(WorldContext);
+}

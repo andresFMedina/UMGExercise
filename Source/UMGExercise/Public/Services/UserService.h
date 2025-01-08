@@ -23,6 +23,8 @@ class UMGEXERCISE_API UUserService : public UObject
 
 	UDataTable* UsersDataTable;
 
+	UWorld* WorldContext;
+
 	FTimerHandle ChangeConnectionTimer;
 
 	void GenerateConnectionStatusChanges();
@@ -39,4 +41,6 @@ public:
 	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
 
 	FOnUserChangeConnectionStatusDelegate OnUserChangeConnectionStatus;
+
+	FORCEINLINE void SetWorldContext(UWorld* World) { WorldContext = World; }
 };
