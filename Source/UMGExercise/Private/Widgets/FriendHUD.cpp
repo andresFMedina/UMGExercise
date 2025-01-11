@@ -11,7 +11,7 @@ void UFriendHUD::NativeConstruct()
 	Super::NativeConstruct();
 
 	FriendsViewModel = NewObject<UFriendsViewModel>();
-	InitializeLists();	
+	InitializeLists();
 }
 
 void UFriendHUD::InitializeLists()
@@ -19,13 +19,13 @@ void UFriendHUD::InitializeLists()
 	check(FriendsViewModel && ConnectedFriendsWidget && DisconnectedFriendsWidget);
 
 	FriendsViewModel->SetDataSource(DataSource);
-	FriendsViewModel->SetWorldContext(GetWorld());
 
 	ConnectedFriendsWidget->SetListName(FString("Online"));
 	ConnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(true));
 	DisconnectedFriendsWidget->SetListName(FString("Offline"));
 	DisconnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(false));
-	
+
+	GetWorld()->GetTimerManager().SetTimer(ConnectionSimulationTimer, this, &ThisClass::InitiallizeConnectionSimulation, 5.f, false);
 	FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
 }
 
@@ -48,4 +48,9 @@ void UFriendHUD::SetDisconnectedFriend(UObject* Friend)
 {
 	ConnectedFriendsWidget->RemoveListItem(Friend);
 	DisconnectedFriendsWidget->AddListItem(Friend);
+}
+
+void UFriendHUD::InitiallizeConnectionSimulation()
+{
+	FriendsViewModel->SetWorldContext(GetWorld());
 }

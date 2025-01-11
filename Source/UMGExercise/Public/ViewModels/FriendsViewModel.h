@@ -37,7 +37,7 @@ public:
 	void OnFriendConnectionStatusChanged(FUserDataRow User);
 
 	UFUNCTION(BlueprintCallable)
-	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
+	void SetDataSource(const TSoftObjectPtr<UDataTable>& DataSource);
 
 	void SetWorldContext(UWorld* WorldContext);
 
