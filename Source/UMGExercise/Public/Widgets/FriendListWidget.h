@@ -8,6 +8,8 @@
 
 class UTextBlock;
 class UListView;
+class UButton;
+class UImage;
 /**
  * 
  */
@@ -22,12 +24,26 @@ class UMGEXERCISE_API UFriendListWidget : public UUserWidget
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UListView* FriendsListView;
 
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* CollapseButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UImage* CollapseButtonImage;
+
+protected:
+	virtual void NativeConstruct() override;
+
 public:
 	void SetFriendsListValues(const TArray<UObject*> Friends);
 
 	void SetListName(const FString& ListName);
 
 	void AddListItem(UObject* FriendToAdd);
+
 	void RemoveListItem(UObject* FriendToRemove);
-	
+
+	void CollapseButtonAction();
+
+	UFUNCTION(BlueprintCallable)
+	void OnCollapseButtonClick();
 };

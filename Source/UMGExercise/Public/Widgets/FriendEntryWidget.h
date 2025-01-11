@@ -9,6 +9,7 @@
 
 class UTextBlock;
 class UFriendModel;
+class UFriendDetailsHoverWidget;
 /**
  * 
  */
@@ -19,6 +20,8 @@ class UMGEXERCISE_API UFriendEntryWidget : public UUserWidget, public IUserObjec
 
 protected:
 	virtual void NativeOnListItemObjectSet(UObject* FriendModelItem) override;
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 
 private:
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
@@ -32,6 +35,12 @@ private:
 
 	UPROPERTY()
 	UFriendModel* FriendItem;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UFriendDetailsHoverWidget> FriendHoverClass;
+
+	UFriendDetailsHoverWidget* FriendHoverInstance;
+
 
 public:
 	UFUNCTION(BlueprintCallable)
