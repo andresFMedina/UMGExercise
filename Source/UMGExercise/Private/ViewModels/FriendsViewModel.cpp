@@ -20,12 +20,12 @@ UFriendModel* UFriendsViewModel::MapUserDataToFriendModel(const FUserDataRow* Us
 
 UFriendsViewModel::UFriendsViewModel()
 {
-	UserService = UUserService::Get();	
+	UserService = UUserService::Get();
 }
 
 UFriendModel* UFriendsViewModel::GetFriendByNickname(const FString& Nickname) const
 {
-	FUserDataRow* UserFound = UserService->GetUserByNickname(Nickname);	
+	FUserDataRow* UserFound = UserService->GetUserByNickname(Nickname);
 	return MapUserDataToFriendModel(UserFound);
 }
 
@@ -36,7 +36,7 @@ TArray<UObject*> UFriendsViewModel::GetFriendsByConnectionStatus(const bool bIsC
 
 	if (UsersFound.Num() > 0)
 	{
-		for (FUserDataRow* User : UsersFound) 
+		for (FUserDataRow* User : UsersFound)
 		{
 			UFriendModel* Friend = NewObject<UFriendModel>();
 			Friend->MapUserToFriend(User);
@@ -57,9 +57,14 @@ void UFriendsViewModel::OnFriendConnectionStatusChanged(FUserDataRow User)
 	OnFriendStatusChangedDelegate.Broadcast(FriendToSend, User.bIsConnected);
 }
 
-void UFriendsViewModel::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
+void UFriendsViewModel::SetDataSource(const TSoftObjectPtr<UDataTable>& DataSource)
 {
-	UserService->SetDataSource(DataSource);
+	UserService->SetDataSource(DataSource);	
+}
+
+void UFriendsViewModel::SetWorldContext(UWorld* WorldContext)
+{
+	UserService->SetWorldContext(WorldContext);
+	UserService->OnUserChangeConnectionStatus.AddUObject(this, &ThisClass::OnFriendConnectionStatusChanged);
 	UserService->StartConnectionStatusChangesTimer();
-	//UserService->OnUserChangeConnectionStatus.AddUObject(this, &UFriendsViewModel::OnFriendConnectionStatusChanged);
 }

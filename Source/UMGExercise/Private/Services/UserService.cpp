@@ -3,27 +3,26 @@
 
 #include "Services/UserService.h"
 #include "Engine/DataTable.h"
-#include "Data/UserData.h"
 #include "TimerManager.h"
 
 UUserService* UUserService::Instance = nullptr;
 
 UUserService::UUserService()
 {
-	
+
 }
 
 void UUserService::StartConnectionStatusChangesTimer()
 {
-	float EventTime = FMath::RandRange(30, 90);
-	/*if (GetWorld())
+	float EventTime = FMath::RandRange(10, 15);
+	if (WorldContext)
 	{
-		GetWorld()->GetTimerManager().SetTimer(ChangeConnectionTimer, this, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
+		WorldContext->GetTimerManager().SetTimer(ChangeConnectionTimer, Instance, &UUserService::GenerateConnectionStatusChanges, EventTime, false);
 	}
-	else 
+	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("World is empty"));
-	}*/
+	}
 }
 
 void UUserService::GenerateConnectionStatusChanges()
@@ -40,6 +39,7 @@ void UUserService::GenerateConnectionStatusChanges()
 	{
 		int RandomIndex = FMath::RandRange(0, AllUsers.Num() - 1);
 		FUserDataRow* RandomUserToChange = AllUsers[RandomIndex];
+		UE_LOG(LogTemp, Warning, TEXT("User changed: %s"), *RandomUserToChange->Nickname);
 		RandomUserToChange->bIsConnected = !RandomUserToChange->bIsConnected;
 		SetUserData(RandomUserToChange);
 
@@ -48,11 +48,26 @@ void UUserService::GenerateConnectionStatusChanges()
 	}
 }
 
+void UUserService::BeginDestroy()
+{
+	Super::BeginDestroy();
+
+	if (UsersDataTable)
+	{
+		UsersDataTable->RemoveFromRoot();
+		UsersDataTable = nullptr;
+	}
+
+	Instance->RemoveFromRoot();
+	Instance = nullptr;
+}
+
 UUserService* UUserService::Get()
 {
 	if (!Instance)
 	{
 		Instance = NewObject<UUserService>();
+		Instance->AddToRoot();
 	}
 	return Instance;
 }
@@ -93,7 +108,8 @@ void UUserService::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
 	if (!DataSource.IsValid())
 	{
 		DataSource.LoadSynchronous();
-	}	
-	UsersDataTable = DataSource.Get();
+	}
+	UsersDataTable = DataSource.Get();	
 	check(UsersDataTable);
+	UsersDataTable->AddToRoot();
 }

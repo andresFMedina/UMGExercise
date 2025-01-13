@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "FriendsViewModel.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFriendStatusChanged, UObject*, FriendChanged, bool, bIsConnected);
@@ -18,7 +17,7 @@ struct FUserDataRow;
 UCLASS()
 class UMGEXERCISE_API UFriendsViewModel : public UObject
 {
-	GENERATED_BODY()	
+	GENERATED_BODY()
 
 	UUserService* UserService;
 
@@ -34,9 +33,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	TArray<UObject*> GetFriendsByConnectionStatus(const bool bIsConnected) const;
-	
+
 	void OnFriendConnectionStatusChanged(FUserDataRow User);
 
 	UFUNCTION(BlueprintCallable)
-	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
+	void SetDataSource(const TSoftObjectPtr<UDataTable>& DataSource);
+
+	void SetWorldContext(UWorld* WorldContext);
+
 };

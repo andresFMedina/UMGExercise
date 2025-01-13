@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Data/UserData.h"
 #include "UserService.generated.h"
 
-struct FUserDataRow;
 class UDataTable;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnUserChangeConnectionStatusDelegate, FUserDataRow /*UserChanged*/);
@@ -23,11 +23,15 @@ class UMGEXERCISE_API UUserService : public UObject
 
 	UDataTable* UsersDataTable;
 
+	UWorld* WorldContext;
+
 	FTimerHandle ChangeConnectionTimer;
 
 	void GenerateConnectionStatusChanges();
 
 public:
+	virtual void BeginDestroy() override;
+
 	static UUserService* Get();
 
 	void StartConnectionStatusChangesTimer();
@@ -39,4 +43,6 @@ public:
 	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
 
 	FOnUserChangeConnectionStatusDelegate OnUserChangeConnectionStatus;
+
+	FORCEINLINE void SetWorldContext(UWorld* World) { WorldContext = World; }
 };
