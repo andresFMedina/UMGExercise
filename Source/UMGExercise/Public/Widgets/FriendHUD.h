@@ -7,6 +7,7 @@
 #include "FriendHUD.generated.h"
 
 class UFriendListWidget;
+class UFriendStatusNotificationWidget;
 class UFriendsViewModel;
 class UDataTable;
 /**
@@ -20,19 +21,26 @@ class UMGEXERCISE_API UFriendHUD : public UUserWidget
 	UFriendListWidget* ConnectedFriendsWidget;
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UFriendListWidget* DisconnectedFriendsWidget;
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UFriendStatusNotificationWidget* FriendStatusNotification;
 	UPROPERTY()
 	UFriendsViewModel* FriendsViewModel;
 	UPROPERTY(EditDefaultsOnly)
 	TSoftObjectPtr<UDataTable> DataSource;
+
+	FTimerHandle ConnectionSimulationTimer;
 
 protected:
 	virtual void NativeConstruct() override;
 private:
 	void InitializeLists();
 	
-	void OnChangeUserConnectionStatus(UObject* Friend, bool bIsConnected);
+	UFUNCTION()
+	void OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected);
 
-	void SetConnectedFriend(UObject* Friend);
+	void SetConnectedFriend(const FString& Friend);
 
-	void SetDisconnectedFriend(UObject* Friend);
+	void SetDisconnectedFriend(const FString& Friend);
+
+	void InitiallizeConnectionSimulation();
 };

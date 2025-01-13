@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "FriendsViewModel.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFriendStatusChanged, UObject*, FriendChanged, bool, bIsConnected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFriendStatusChanged, FString&, FriendChanged, bool, bIsConnected);
 
 class UUserService;
 class UFriendModel;
@@ -32,7 +32,7 @@ public:
 	UFriendModel* GetFriendByNickname(const FString& Nickname) const;
 
 	UFUNCTION(BlueprintCallable)
-	TArray<UObject*> GetFriendsByConnectionStatus(const bool bIsConnected) const;
+	TArray<UFriendModel*> GetFriendsByConnectionStatus(const bool bIsConnected) const;
 
 	void OnFriendConnectionStatusChanged(FUserDataRow User);
 

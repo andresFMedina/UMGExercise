@@ -10,6 +10,7 @@ class UTextBlock;
 class UListView;
 class UButton;
 class UImage;
+class UFriendModel;
 /**
  * 
  */
@@ -29,18 +30,24 @@ class UMGEXERCISE_API UFriendListWidget : public UUserWidget
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UImage* CollapseButtonImage;
+	
+	UPROPERTY()	
+	TArray<UFriendModel*> FriendsList;
+
 
 protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void SetFriendsListValues(const TArray<UObject*> Friends);
+	void SetFriendsListValues(const TArray<UFriendModel*> Friends);
 
 	void SetListName(const FString& ListName);
 
-	void AddListItem(UObject* FriendToAdd);
+	UFriendModel* GetFriendByNickname(const FString& NicknameToLook) const;
 
-	void RemoveListItem(UObject* FriendToRemove);
+	void AddListItem(UFriendModel* FriendToAdd);
+
+	void RemoveListItem(UFriendModel* FriendToRemove);
 
 	void CollapseButtonAction();
 

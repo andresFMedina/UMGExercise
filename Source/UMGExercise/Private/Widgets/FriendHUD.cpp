@@ -3,8 +3,10 @@
 
 #include "Widgets/FriendHUD.h"
 #include "Widgets/FriendListWidget.h"
+#include "Widgets/FriendStatusNotificationWidget.h"
 #include "ViewModels/FriendsViewModel.h"
 #include "Engine/DataTable.h"
+#include "Models/FriendModel.h"
 
 void UFriendHUD::NativeConstruct()
 {
@@ -29,23 +31,26 @@ void UFriendHUD::InitializeLists()
 	FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
 }
 
-void UFriendHUD::OnChangeUserConnectionStatus(UObject* Friend, bool bIsConnected)
+void UFriendHUD::OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected)
 {
 	if (bIsConnected) {
-		SetConnectedFriend(Friend);
+		SetConnectedFriend(UserNickname);
+		FriendStatusNotification->ShowNotification(UserNickname);
 		return;
 	}
-	SetDisconnectedFriend(Friend);
+	SetDisconnectedFriend(UserNickname);
 }
 
-void UFriendHUD::SetConnectedFriend(UObject* Friend)
+void UFriendHUD::SetConnectedFriend(const FString& UserNickname)
 {
+	UFriendModel* Friend = DisconnectedFriendsWidget->GetFriendByNickname(UserNickname);
 	DisconnectedFriendsWidget->RemoveListItem(Friend);
 	ConnectedFriendsWidget->AddListItem(Friend);
 }
 
-void UFriendHUD::SetDisconnectedFriend(UObject* Friend)
+void UFriendHUD::SetDisconnectedFriend(const FString& UserNickname)
 {
+	UFriendModel* Friend = ConnectedFriendsWidget->GetFriendByNickname(UserNickname);
 	ConnectedFriendsWidget->RemoveListItem(Friend);
 	DisconnectedFriendsWidget->AddListItem(Friend);
 }

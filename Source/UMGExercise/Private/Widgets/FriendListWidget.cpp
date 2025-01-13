@@ -6,6 +6,7 @@
 #include "Components/ListView.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Models/FriendModel.h"
 
 void UFriendListWidget::NativeConstruct()
 {
@@ -14,8 +15,9 @@ void UFriendListWidget::NativeConstruct()
 	CollapseButton->OnClicked.AddDynamic(this, &UFriendListWidget::OnCollapseButtonClick);	
 }
 
-void UFriendListWidget::SetFriendsListValues(const TArray<UObject*> Friends)
+void UFriendListWidget::SetFriendsListValues(const TArray<UFriendModel*> Friends)
 {
+	FriendsList = Friends;
 	FriendsListView->SetListItems(Friends);
 }
 
@@ -24,13 +26,23 @@ void UFriendListWidget::SetListName(const FString& ListName)
 	ListNameLabel->SetText(FText::FromString(ListName));
 }
 
-void UFriendListWidget::AddListItem(UObject* FriendToAdd)
+UFriendModel* UFriendListWidget::GetFriendByNickname(const FString& NicknameToLook) const
 {
+	return *FriendsList.FindByPredicate([NicknameToLook](UFriendModel* Friend)
+		{
+			return NicknameToLook == Friend->GetNickname();
+		});
+}
+
+void UFriendListWidget::AddListItem(UFriendModel* FriendToAdd)
+{
+	FriendsList.Add(FriendToAdd);
 	FriendsListView->AddItem(FriendToAdd);
 }
 
-void UFriendListWidget::RemoveListItem(UObject* FriendToRemove)
+void UFriendListWidget::RemoveListItem(UFriendModel* FriendToRemove)
 {
+	FriendsList.Remove(FriendToRemove);
 	FriendsListView->RemoveItem(FriendToRemove);
 }
 

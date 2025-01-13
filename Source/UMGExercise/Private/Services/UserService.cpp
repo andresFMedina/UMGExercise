@@ -58,8 +58,11 @@ void UUserService::BeginDestroy()
 		UsersDataTable = nullptr;
 	}
 
-	Instance->RemoveFromRoot();
-	Instance = nullptr;
+	if (Instance) 
+	{
+		Instance->RemoveFromRoot();
+		Instance = nullptr;
+	}
 }
 
 UUserService* UUserService::Get()

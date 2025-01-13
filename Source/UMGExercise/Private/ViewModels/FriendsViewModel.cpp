@@ -29,9 +29,9 @@ UFriendModel* UFriendsViewModel::GetFriendByNickname(const FString& Nickname) co
 	return MapUserDataToFriendModel(UserFound);
 }
 
-TArray<UObject*> UFriendsViewModel::GetFriendsByConnectionStatus(const bool bIsConnected) const
+TArray<UFriendModel*> UFriendsViewModel::GetFriendsByConnectionStatus(const bool bIsConnected) const
 {
-	TArray<UObject*> FriendsFound;
+	TArray<UFriendModel*> FriendsFound;
 	TArray<FUserDataRow*> UsersFound = UserService->GetFriends(bIsConnected);
 
 	if (UsersFound.Num() > 0)
@@ -39,9 +39,8 @@ TArray<UObject*> UFriendsViewModel::GetFriendsByConnectionStatus(const bool bIsC
 		for (FUserDataRow* User : UsersFound)
 		{
 			UFriendModel* Friend = NewObject<UFriendModel>();
-			Friend->MapUserToFriend(User);
-			UObject* FriendMapped = Cast<UObject>(Friend);
-			FriendsFound.Add(FriendMapped);
+			Friend->MapUserToFriend(User);			
+			FriendsFound.Add(Friend);
 		}
 	}
 
@@ -50,11 +49,8 @@ TArray<UObject*> UFriendsViewModel::GetFriendsByConnectionStatus(const bool bIsC
 
 UFUNCTION()
 void UFriendsViewModel::OnFriendConnectionStatusChanged(FUserDataRow User)
-{
-	UFriendModel* FriendChanged = NewObject<UFriendModel>();
-	FriendChanged->MapUserToFriend(&User);
-	UObject* FriendToSend = Cast<UObject>(FriendChanged);
-	OnFriendStatusChangedDelegate.Broadcast(FriendToSend, User.bIsConnected);
+{	
+	OnFriendStatusChangedDelegate.Broadcast(User.Nickname, User.bIsConnected);
 }
 
 void UFriendsViewModel::SetDataSource(const TSoftObjectPtr<UDataTable>& DataSource)
