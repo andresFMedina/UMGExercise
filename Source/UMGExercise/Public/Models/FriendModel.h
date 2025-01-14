@@ -34,4 +34,7 @@ public:
 	FORCEINLINE FString GetConnectionStatus() const { return ConnectionStatus; }
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE FString GetDescription() const { return Description; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetConnectionStatus(const bool bIsConnected) { ConnectionStatus = bIsConnected ? FString("Online") : FString("Offline"); }
 };

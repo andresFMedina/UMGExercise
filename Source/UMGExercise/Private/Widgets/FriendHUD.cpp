@@ -18,7 +18,7 @@ void UFriendHUD::NativeConstruct()
 
 void UFriendHUD::InitializeLists()
 {
-	check(FriendsViewModel && ConnectedFriendsWidget && DisconnectedFriendsWidget);
+	check(FriendsViewModel);
 
 	FriendsViewModel->SetDataSource(DataSource);
 
@@ -30,29 +30,28 @@ void UFriendHUD::InitializeLists()
 	GetWorld()->GetTimerManager().SetTimer(ConnectionSimulationTimer, this, &ThisClass::InitiallizeConnectionSimulation, 5.f, false);
 	FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
 }
-
+/* Find the reference with the nickname
+	Determine which list will be the source and which one will be the destination
+	Remove the Item from the source
+	Add the Item to the destiny
+	Show the notification is bIsConnected is true
+*/
 void UFriendHUD::OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected)
 {
 	if (bIsConnected) {
-		SetConnectedFriend(UserNickname);
+		MoveListItem(DisconnectedFriendsWidget, ConnectedFriendsWidget, UserNickname, bIsConnected);
 		FriendStatusNotification->ShowNotification(UserNickname);
 		return;
 	}
-	SetDisconnectedFriend(UserNickname);
+	MoveListItem(ConnectedFriendsWidget, DisconnectedFriendsWidget, UserNickname, bIsConnected);
 }
 
-void UFriendHUD::SetConnectedFriend(const FString& UserNickname)
+void UFriendHUD::MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* DestinyList, const FString& Nickname, const bool bIsConnected)
 {
-	UFriendModel* Friend = DisconnectedFriendsWidget->GetFriendByNickname(UserNickname);
-	DisconnectedFriendsWidget->RemoveListItem(Friend);
-	ConnectedFriendsWidget->AddListItem(Friend);
-}
-
-void UFriendHUD::SetDisconnectedFriend(const FString& UserNickname)
-{
-	UFriendModel* Friend = ConnectedFriendsWidget->GetFriendByNickname(UserNickname);
-	ConnectedFriendsWidget->RemoveListItem(Friend);
-	DisconnectedFriendsWidget->AddListItem(Friend);
+	UFriendModel* Friend = SourceList->GetFriendByNickname(Nickname);
+	Friend->SetConnectionStatus(bIsConnected);
+	SourceList->RemoveListItem(Friend);
+	DestinyList->AddListItem(Friend);
 }
 
 void UFriendHUD::InitiallizeConnectionSimulation()

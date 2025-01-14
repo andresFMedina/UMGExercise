@@ -15,7 +15,7 @@ void UFriendListWidget::NativeConstruct()
 	CollapseButton->OnClicked.AddDynamic(this, &UFriendListWidget::OnCollapseButtonClick);	
 }
 
-void UFriendListWidget::SetFriendsListValues(const TArray<UFriendModel*> Friends)
+void UFriendListWidget::SetFriendsListValues(const TArray<UFriendModel*>& Friends)
 {
 	FriendsList = Friends;
 	FriendsListView->SetListItems(Friends);
@@ -54,12 +54,12 @@ void UFriendListWidget::CollapseButtonAction()
 	
 	switch (CurrentVisibility)
 	{
-	case ESlateVisibility::Visible:
-		FriendsListView->SetVisibility(ESlateVisibility::Collapsed);
+	case ESlateVisibility::Visible:		
+		PlayAnimation(CollapseListAnimation);
 		break;
 	case ESlateVisibility::Collapsed:
 	default:
-		FriendsListView->SetVisibility(ESlateVisibility::Visible);
+		PlayAnimation(ExpandListAnimation);
 		Transform.Angle = 0.f;
 		break;
 	}

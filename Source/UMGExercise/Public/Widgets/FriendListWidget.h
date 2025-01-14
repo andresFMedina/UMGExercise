@@ -30,6 +30,12 @@ class UMGEXERCISE_API UFriendListWidget : public UUserWidget
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UImage* CollapseButtonImage;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* CollapseListAnimation;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* ExpandListAnimation;
 	
 	UPROPERTY()	
 	TArray<UFriendModel*> FriendsList;
@@ -39,7 +45,7 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void SetFriendsListValues(const TArray<UFriendModel*> Friends);
+	void SetFriendsListValues(const TArray<UFriendModel*>& Friends);
 
 	void SetListName(const FString& ListName);
 

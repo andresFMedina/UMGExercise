@@ -36,11 +36,9 @@ private:
 	void InitializeLists();
 	
 	UFUNCTION()
-	void OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected);
+	void OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected);	
 
-	void SetConnectedFriend(const FString& Friend);
-
-	void SetDisconnectedFriend(const FString& Friend);
+	void MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* DestinyList, const FString& Nickname, const bool bIsConnected);
 
 	void InitiallizeConnectionSimulation();
 };

@@ -19,7 +19,13 @@ class UMGEXERCISE_API UFriendStatusNotificationWidget : public UUserWidget
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UTextBlock* MessageText;
 
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* ShowNotificationAnimation;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* HideNotificationAnimation;
+
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
 	float TimeToHideNotification = 5.f;
 
 	FTimerHandle HideNotificationTimer;
