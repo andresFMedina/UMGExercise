@@ -7,7 +7,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFriendStatusChanged, FString&, FriendChanged, bool, bIsConnected);
 
-class UUserService;
+//class UUserService;
+class UUserServiceSubsystem;
 class UFriendModel;
 class UDataTable;
 struct FUserDataRow;
@@ -19,7 +20,7 @@ class UMGEXERCISE_API UFriendsViewModel : public UObject
 {
 	GENERATED_BODY()
 
-	UUserService* UserService;
+	UUserServiceSubsystem* UserService;
 
 	UFriendModel* MapUserDataToFriendModel(const FUserDataRow* User) const;
 

@@ -26,9 +26,7 @@ class UMGEXERCISE_API UFriendHUD : public UUserWidget
 	UPROPERTY()
 	UFriendsViewModel* FriendsViewModel;
 	UPROPERTY(EditDefaultsOnly)
-	TSoftObjectPtr<UDataTable> DataSource;
-
-	FTimerHandle ConnectionSimulationTimer;
+	TSoftObjectPtr<UDataTable> DataSource;	
 
 protected:
 	virtual void NativeConstruct() override;
@@ -38,7 +36,5 @@ private:
 	UFUNCTION()
 	void OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected);	
 
-	void MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* DestinyList, const FString& Nickname, const bool bIsConnected);
-
-	void InitiallizeConnectionSimulation();
+	void MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* DestinyList, const FString& Nickname, const bool bIsConnected);	
 };

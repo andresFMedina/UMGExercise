@@ -2,10 +2,11 @@
 
 
 #include "ViewModels/FriendsViewModel.h"
-#include"Data/UserData.h"
+#include "Data/UserData.h"
 #include "Models/FriendModel.h"
-#include "Services/UserService.h"
+#include "Services/UserServiceSubsystem.h"
 #include "Engine/DataTable.h"
+#include "Kismet/GameplayStatics.h"
 
 UFriendModel* UFriendsViewModel::MapUserDataToFriendModel(const FUserDataRow* User) const
 {
@@ -20,7 +21,7 @@ UFriendModel* UFriendsViewModel::MapUserDataToFriendModel(const FUserDataRow* Us
 
 UFriendsViewModel::UFriendsViewModel()
 {
-	UserService = UUserService::Get();
+	
 }
 
 UFriendModel* UFriendsViewModel::GetFriendByNickname(const FString& Nickname) const
@@ -60,7 +61,11 @@ void UFriendsViewModel::SetDataSource(const TSoftObjectPtr<UDataTable>& DataSour
 
 void UFriendsViewModel::SetWorldContext(UWorld* WorldContext)
 {
-	UserService->SetWorldContext(WorldContext);
-	UserService->OnUserChangeConnectionStatus.AddUObject(this, &ThisClass::OnFriendConnectionStatusChanged);
-	UserService->StartConnectionStatusChangesTimer();
+	if (WorldContext && !UserService) 
+	{
+		UserService = UGameplayStatics::GetGameInstance(WorldContext)->GetSubsystem<UUserServiceSubsystem>();
+		//UserService->SetWorldContext(WorldContext);
+		UserService->OnUserChangeConnectionStatus.AddUObject(this, &ThisClass::OnFriendConnectionStatusChanged);
+		UserService->StartConnectionStatusChangesTimer();
+	}
 }

@@ -13,6 +13,7 @@ void UFriendHUD::NativeConstruct()
 	Super::NativeConstruct();
 
 	FriendsViewModel = NewObject<UFriendsViewModel>();
+	FriendsViewModel->SetWorldContext(GetWorld());
 	InitializeLists();
 }
 
@@ -25,9 +26,7 @@ void UFriendHUD::InitializeLists()
 	ConnectedFriendsWidget->SetListName(FString("Online"));
 	ConnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(true));
 	DisconnectedFriendsWidget->SetListName(FString("Offline"));
-	DisconnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(false));
-
-	GetWorld()->GetTimerManager().SetTimer(ConnectionSimulationTimer, this, &ThisClass::InitiallizeConnectionSimulation, 5.f, false);
+	DisconnectedFriendsWidget->SetFriendsListValues(FriendsViewModel->GetFriendsByConnectionStatus(false));	
 	FriendsViewModel->OnFriendStatusChangedDelegate.AddDynamic(this, &ThisClass::OnChangeUserConnectionStatus);
 }
 /* Find the reference with the nickname
@@ -52,9 +51,4 @@ void UFriendHUD::MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* 
 	Friend->SetConnectionStatus(bIsConnected);
 	SourceList->RemoveListItem(Friend);
 	DestinyList->AddListItem(Friend);
-}
-
-void UFriendHUD::InitiallizeConnectionSimulation()
-{
-	FriendsViewModel->SetWorldContext(GetWorld());
 }
