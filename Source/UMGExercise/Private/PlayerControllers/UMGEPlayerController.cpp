@@ -12,7 +12,7 @@ void AUMGEPlayerController::BeginPlay()
 	check(HUDOverlay);
 
 	HUDOverlay->AddToViewport();
-	HUDOverlay->SetVisibility(ESlateVisibility::Visible);
+	//HUDOverlay->SetVisibility(ESlateVisibility::Visible);
 
 	SetShowMouseCursor(true);
 }

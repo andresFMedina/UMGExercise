@@ -35,6 +35,7 @@ public:
 	void SetUserData(FUserDataRow* UserChanged);
 	FUserDataRow* GetUserByNickname(const FString& UserName) const;
 
+	UFUNCTION(BlueprintCallable)
 	void SetDataSource(TSoftObjectPtr<UDataTable> DataSource);
 
 	FOnUserChangeConnectionStatusDelegate OnUserChangeConnectionStatus;

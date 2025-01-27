@@ -37,6 +37,7 @@ void UUserServiceSubsystem::Deinitialize()
 {
 	if (UsersDataTable)
 	{
+		UsersDataTable->RemoveFromRoot();
 		UsersDataTable = nullptr;
 	}
 }
@@ -94,4 +95,6 @@ void UUserServiceSubsystem::SetDataSource(TSoftObjectPtr<UDataTable> DataSource)
 	}
 	UsersDataTable = DataSource.Get();
 	check(UsersDataTable);
+	UsersDataTable->AddToRoot();
+	StartConnectionStatusChangesTimer();
 }

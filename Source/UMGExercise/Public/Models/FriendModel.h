@@ -10,7 +10,7 @@ struct FUserDataRow;
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class UMGEXERCISE_API UFriendModel : public UObject
 {
 	GENERATED_BODY()
