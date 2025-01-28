@@ -9,29 +9,16 @@
 
 class UTextBlock;
 /**
- * 
+ *
  */
 UCLASS()
 class UMGEXERCISE_API UFriendStatusNotificationWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UTextBlock* MessageText;
 
-	UPROPERTY(Transient, meta = (BindWidgetAnim))
-	UWidgetAnimation* ShowNotificationAnimation;
-
-	UPROPERTY(Transient, meta = (BindWidgetAnim))
-	UWidgetAnimation* HideNotificationAnimation;
-
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float TimeToHideNotification = 5.f;
-
-	FTimerHandle HideNotificationTimer;
-
-public:
-	void ShowNotification(const FString& Nickname);
-	
-	void HideNotification();
 };

@@ -64,7 +64,7 @@ void UFriendsVM::SetIsOnlineList(const bool IsOnlineList)
 void UFriendsVM::InitiallizeList(UUserServiceSubsystem* UserService)
 {
 	TArray<UFriendModel*> FriendsFound;
-	UserService->OnUserChangeConnectionStatus.AddUObject(this, &ThisClass::OnFriendConnectionStatusChanged);
+	UserService->OnUserChangeConnectionStatus.AddUObject(this, &ThisClass::OnFriendConnectionStatusChanged);	
 	TArray<FUserDataRow*> UsersFound = UserService->GetFriends(bIsOnlineList);
 
 	if (UsersFound.Num() > 0)
