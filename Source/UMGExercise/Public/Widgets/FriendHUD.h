@@ -8,7 +8,6 @@
 
 class UFriendListWidget;
 class UFriendStatusNotificationWidget;
-class UFriendsViewModel;
 class UDataTable;
 /**
  * 
@@ -17,24 +16,22 @@ UCLASS()
 class UMGEXERCISE_API UFriendHUD : public UUserWidget
 {
 	GENERATED_BODY()
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite ,meta = (BindWidget, AllowPrivateAccess))
 	UFriendListWidget* ConnectedFriendsWidget;
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UFriendListWidget* DisconnectedFriendsWidget;
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UFriendStatusNotificationWidget* FriendStatusNotification;
-	UPROPERTY()
-	UFriendsViewModel* FriendsViewModel;
-	UPROPERTY(EditDefaultsOnly)
+	UFriendStatusNotificationWidget* FriendStatusNotification;	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess))
 	TSoftObjectPtr<UDataTable> DataSource;	
 
 protected:
 	virtual void NativeConstruct() override;
 private:
-	void InitializeLists();
+	/*void InitializeLists();
 	
 	UFUNCTION()
 	void OnChangeUserConnectionStatus(FString& UserNickname, bool bIsConnected);	
 
-	void MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* DestinyList, const FString& Nickname, const bool bIsConnected);	
+	void MoveListItem(UFriendListWidget* SourceList, UFriendListWidget* DestinyList, const FString& Nickname, const bool bIsConnected);	*/
 };

@@ -11,52 +11,48 @@ class UListView;
 class UButton;
 class UImage;
 class UFriendModel;
+class UFriendsVM;
 /**
- * 
+ *
  */
 UCLASS()
 class UMGEXERCISE_API UFriendListWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UTextBlock* ListNameLabel;
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Getter = "GetIsOnlineList", Setter = "SetIsOnlineList")
+	bool bIsOnlineList;
 
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UListView* FriendsListView;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* ListNameLabel;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* CollapseButton;
 
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UImage* CollapseButtonImage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	UImage* CollapseButtonImage;	
 
-	UPROPERTY(Transient, meta = (BindWidgetAnim))
-	UWidgetAnimation* CollapseListAnimation;
-
-	UPROPERTY(Transient, meta = (BindWidgetAnim))
-	UWidgetAnimation* ExpandListAnimation;
-	
-	UPROPERTY()	
-	TArray<UFriendModel*> FriendsList;
-
-
-protected:
 	virtual void NativeConstruct() override;
 
-public:
-	void SetFriendsListValues(const TArray<UFriendModel*>& Friends);
-
-	void SetListName(const FString& ListName);
-
-	UFriendModel* GetFriendByNickname(const FString& NicknameToLook) const;
-
-	void AddListItem(UFriendModel* FriendToAdd);
-
-	void RemoveListItem(UFriendModel* FriendToRemove);
-
-	void CollapseButtonAction();
+public:	
 
 	UFUNCTION(BlueprintCallable)
-	void OnCollapseButtonClick();
+	void AddListItem(UObject* FriendToAdd);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveListItem(UObject* FriendToRemove);
+
+	UFUNCTION()
+	bool GetIsOnlineList() const;
+
+	UFUNCTION()
+	void SetIsOnlineList(const bool IsOnlineList);
+
+
+	/*UFUNCTION(BlueprintCallable)
+	void CollapseButtonAction();*/
 };
